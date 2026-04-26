@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rompe el Espejo — Silvi Aura</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Raleway:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--deep:#1a0e2e;--mid:#2d1b4e;--purple:#6b4c9a;--light-purple:#9b7cc7;
+--gold:#c9a96e;--bright-gold:#e8c87e;--warm:#f5e6c8;--coral:#c75b5b;
+--lavender:#e8dff5;--text:#f0e6ff;--soft:#b8a0d0;
+}
+html{scroll-behavior:smooth}
+body{
+background:var(--deep);color:var(--text);
+font-family:'Raleway',sans-serif;overflow-x:hidden;
+min-height:100vh;
+}
+
+/* SPARKLE CANVAS */
+#sparkles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+
+/* FLOATING PARTICLES */
+.particle{
+position:fixed;width:4px;height:4px;border-radius:50%;pointer-events:none;z-index:2;
+animation:floatUp linear infinite;
+}
+@keyframes floatUp{
+0%{transform:translateY(100vh) scale(0);opacity:0}
+10%{opacity:1}
+90%{opacity:1}
+100%{transform:translateY(-10vh) scale(1);opacity:0}
+}
+
+/* HERO */
+.hero{
+position:relative;min-height:100vh;display:flex;flex-direction:column;
+align-items:center;justify-content:center;text-align:center;padding:2rem 1.5rem;
+background:
+radial-gradient(ellipse at 20% 20%, rgba(107,76,154,0.3) 0%, transparent 50%),
+radial-gradient(ellipse at 80% 80%, rgba(201,169,110,0.15) 0%, transparent 50%),
+radial-gradient(ellipse at 50% 50%, rgba(26,14,46,1) 0%, rgba(26,14,46,0.95) 100%);
+z-index:3;
+}
+.hero::before{
+content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='0.5' fill='%23c9a96e' opacity='0.15'/%3E%3C/svg%3E");
+animation:bgDrift 20s linear infinite;
+}
+@keyframes bgDrift{0%{background-position:0 0}100%{background-position:60px 60px}}
+
+.hero-content{position:relative;z-index:4;max-width:800px}
+
+/* BADGE */
+.badge{
+display:inline-block;padding:0.5rem 1.8rem;
+border:1px solid var(--gold);border-radius:50px;
+font-size:0.75rem;letter-spacing:4px;text-transform:uppercase;
+color:var(--gold);margin-bottom:2rem;
+animation:pulseGlow 3s ease-in-out infinite;
+}
+@keyframes pulseGlow{
+0%,100%{box-shadow:0 0 15px rgba(201,169,110,0.2)}
+50%{box-shadow:0 0 30px rgba(201,169,110,0.5),0 0 60px rgba(201,169,110,0.15)}
+}
+
+/* TITLE */
+.title{
+font-family:'Playfair Display',serif;font-size:clamp(3rem,8vw,6rem);
+font-weight:900;line-height:1;margin-bottom:0.5rem;
+background:linear-gradient(135deg,var(--warm) 0%,var(--gold) 30%,var(--bright-gold) 50%,var(--gold) 70%,var(--warm) 100%);
+background-size:200% auto;
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+background-clip:text;
+animation:shimmer 4s ease-in-out infinite;
+}
+@keyframes shimmer{0%{background-position:0% center}50%{background-position:100% center}100%{background-position:0% center}}
+
+.subtitle{
+font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,3vw,1.5rem);
+color:var(--soft);font-style:italic;margin-bottom:2.5rem;
+animation:fadeInUp 1.2s ease 0.3s both;
+}
+
+/* QUOTE HIGHLIGHT */
+.hero-quote{
+font-family:'Playfair Display',serif;font-size:clamp(1.2rem,3.5vw,1.8rem);
+color:var(--text);line-height:1.6;margin-bottom:3rem;
+animation:fadeInUp 1.2s ease 0.5s both;
+}
+.hero-quote em{color:var(--gold);font-style:normal;font-weight:700}
+
+@keyframes fadeInUp{
+0%{opacity:0;transform:translateY(30px)}
+100%{opacity:1;transform:translateY(0)}
+}
+
+/* PRICE SECTION */
+.price-box{
+background:linear-gradient(135deg,rgba(45,27,78,0.8),rgba(107,76,154,0.3));
+border:1px solid rgba(201,169,110,0.3);border-radius:20px;
+padding:2.5rem 3rem;margin:2rem auto;max-width:420px;
+position:relative;overflow:hidden;
+animation:fadeInUp 1.2s ease 0.7s both;
+}
+.price-box::before{
+content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+background:conic-gradient(from 0deg,transparent,rgba(201,169,110,0.1),transparent,rgba(201,169,110,0.05),transparent);
+animation:rotateBg 8s linear infinite;
+}
+@keyframes rotateBg{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+.price-box-inner{position:relative;z-index:2}
+.price-label{font-size:0.8rem;letter-spacing:3px;color:var(--soft);margin-bottom:0.8rem;text-transform:uppercase}
+.price-old{
+font-size:1.6rem;color:var(--coral);text-decoration:line-through;
+font-weight:300;opacity:0.8;display:inline-block;margin-right:0.8rem;
+position:relative;
+}
+.price-old::after{
+content:'';position:absolute;left:-5%;top:45%;width:110%;height:3px;
+background:var(--coral);transform:rotate(-8deg);
+}
+.price-new{
+font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:900;
+color:var(--bright-gold);display:inline-block;
+text-shadow:0 0 30px rgba(201,169,110,0.4);
+}
+.price-new sup{font-size:1.5rem;vertical-align:super;margin-right:2px}
+.price-save{
+display:inline-block;margin-top:0.8rem;padding:0.3rem 1rem;
+background:rgba(199,91,91,0.2);border:1px solid rgba(199,91,91,0.4);
+border-radius:20px;font-size:0.75rem;color:var(--coral);
+letter-spacing:1px;
+animation:pulseSave 2s ease-in-out infinite;
+}
+@keyframes pulseSave{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+
+/* CTA BUTTON */
+.cta-btn{
+display:inline-block;margin-top:2rem;padding:1.2rem 3.5rem;
+font-family:'Raleway',sans-serif;font-size:1rem;font-weight:700;
+letter-spacing:2px;text-transform:uppercase;text-decoration:none;
+color:var(--deep);
+background:linear-gradient(135deg,var(--gold),var(--bright-gold),var(--gold));
+background-size:200% auto;
+border:none;border-radius:60px;cursor:pointer;
+position:relative;overflow:hidden;
+transition:all 0.4s ease;
+animation:fadeInUp 1.2s ease 0.9s both;
+}
+.cta-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 10px 40px rgba(201,169,110,0.4),0 0 80px rgba(201,169,110,0.15);
+background-position:right center;
+}
+.cta-btn::before{
+content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);
+transition:left 0.6s ease;
+}
+.cta-btn:hover::before{left:100%}
+
+/* FLOATING CTA */
+.floating-cta{
+position:fixed;bottom:0;left:0;right:0;z-index:100;
+background:linear-gradient(to top,rgba(26,14,46,0.98),rgba(26,14,46,0.9),transparent);
+padding:1rem 1.5rem 1.2rem;text-align:center;
+transform:translateY(100%);transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.floating-cta.visible{transform:translateY(0)}
+.floating-cta .mini-price{
+font-family:'Playfair Display',serif;display:inline-block;margin-right:1rem;
+vertical-align:middle;
+}
+.floating-cta .mini-price .old{
+text-decoration:line-through;color:var(--coral);font-size:0.9rem;opacity:0.7;margin-right:0.4rem;
+}
+.floating-cta .mini-price .new{color:var(--bright-gold);font-size:1.4rem;font-weight:700}
+.floating-cta .cta-btn-sm{
+display:inline-block;padding:0.8rem 2rem;
+font-family:'Raleway',sans-serif;font-size:0.85rem;font-weight:700;
+letter-spacing:2px;text-transform:uppercase;text-decoration:none;
+color:var(--deep);
+background:linear-gradient(135deg,var(--gold),var(--bright-gold));
+border:none;border-radius:50px;cursor:pointer;
+vertical-align:middle;
+animation:btnPulse 2.5s ease-in-out infinite;
+transition:transform 0.3s;
+}
+.floating-cta .cta-btn-sm:hover{transform:scale(1.05)}
+@keyframes btnPulse{
+0%,100%{box-shadow:0 0 15px rgba(201,169,110,0.3)}
+50%{box-shadow:0 0 35px rgba(201,169,110,0.6),0 0 70px rgba(201,169,110,0.2)}
+}
+
+/* TIMER */
+.timer-section{
+padding:3rem 1.5rem;text-align:center;position:relative;z-index:3;
+background:linear-gradient(180deg,transparent,rgba(45,27,78,0.4),transparent);
+}
+.timer-label{
+font-size:0.8rem;letter-spacing:4px;color:var(--coral);
+text-transform:uppercase;margin-bottom:1.5rem;
+animation:blink 1.5s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.5}}
+.timer{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.timer-unit{
+background:linear-gradient(135deg,rgba(45,27,78,0.9),rgba(107,76,154,0.3));
+border:1px solid rgba(201,169,110,0.25);border-radius:16px;
+padding:1.2rem 1.5rem;min-width:85px;
+position:relative;overflow:hidden;
+}
+.timer-unit::after{
+content:'';position:absolute;top:0;left:0;right:0;height:1px;
+background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.timer-num{
+font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;
+color:var(--bright-gold);line-height:1;
+}
+.timer-txt{font-size:0.65rem;letter-spacing:2px;color:var(--soft);margin-top:0.3rem;text-transform:uppercase}
+
+/* FEATURES */
+.features{
+padding:4rem 1.5rem;max-width:900px;margin:0 auto;position:relative;z-index:3;
+}
+.features-title{
+font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,2.8rem);
+text-align:center;margin-bottom:3rem;color:var(--text);
+}
+.features-title span{color:var(--gold)}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem}
+.feature-card{
+background:linear-gradient(135deg,rgba(45,27,78,0.6),rgba(26,14,46,0.8));
+border:1px solid rgba(107,76,154,0.25);border-radius:16px;
+padding:2rem;position:relative;overflow:hidden;
+transition:all 0.4s ease;
+opacity:0;transform:translateY(40px);
+}
+.feature-card.visible{opacity:1;transform:translateY(0)}
+.feature-card:hover{
+border-color:rgba(201,169,110,0.4);
+transform:translateY(-5px);
+box-shadow:0 15px 40px rgba(0,0,0,0.3);
+}
+.feature-card::before{
+content:'';position:absolute;top:0;left:0;right:0;height:2px;
+background:linear-gradient(90deg,transparent,var(--gold),transparent);
+opacity:0;transition:opacity 0.4s;
+}
+.feature-card:hover::before{opacity:1}
+.feature-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.feature-card h3{
+font-family:'Playfair Display',serif;font-size:1.15rem;
+color:var(--bright-gold);margin-bottom:0.6rem;
+}
+.feature-card p{font-size:0.9rem;line-height:1.7;color:var(--soft);font-weight:300}
+
+/* TESTIMONIAL STYLE SECTION */
+.social-proof{
+padding:4rem 1.5rem;text-align:center;position:relative;z-index:3;
+}
+.big-quote{
+font-family:'Playfair Display',serif;font-size:clamp(1.3rem,4vw,2rem);
+font-style:italic;color:var(--text);max-width:700px;margin:0 auto 1rem;
+line-height:1.6;
+}
+.big-quote-author{color:var(--gold);font-size:0.85rem;letter-spacing:2px}
+
+/* GUARANTEE */
+.guarantee{
+max-width:600px;margin:3rem auto;padding:2rem;text-align:center;
+border:1px dashed rgba(201,169,110,0.3);border-radius:20px;
+background:rgba(45,27,78,0.3);position:relative;z-index:3;
+}
+.guarantee-icon{font-size:3rem;margin-bottom:1rem}
+.guarantee h3{
+font-family:'Playfair Display',serif;font-size:1.3rem;
+color:var(--bright-gold);margin-bottom:0.8rem;
+}
+.guarantee p{font-size:0.9rem;color:var(--soft);line-height:1.7}
+
+/* AUTHOR */
+.author-section{
+padding:4rem 1.5rem;text-align:center;position:relative;z-index:3;
+background:linear-gradient(180deg,transparent,rgba(45,27,78,0.5),transparent);
+}
+.author-name{
+font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);
+font-weight:900;
+background:linear-gradient(135deg,var(--warm),var(--gold),var(--bright-gold));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+background-clip:text;margin-bottom:0.5rem;
+}
+.author-tagline{
+font-family:'Cormorant Garamond',serif;font-style:italic;
+font-size:1.1rem;color:var(--soft);margin-bottom:1.5rem;
+}
+.author-bio{
+font-size:0.9rem;color:var(--soft);line-height:1.8;max-width:550px;
+margin:0 auto;font-weight:300;
+}
+
+/* FINAL CTA */
+.final-cta{
+padding:5rem 1.5rem;text-align:center;position:relative;z-index:3;
+background:
+radial-gradient(ellipse at 50% 80%, rgba(107,76,154,0.2) 0%, transparent 60%);
+}
+.final-cta .title{font-size:clamp(2rem,6vw,3.5rem);margin-bottom:1rem}
+
+/* FOOTER */
+.footer{
+padding:2rem;text-align:center;font-size:0.75rem;
+color:rgba(184,160,208,0.5);position:relative;z-index:3;
+border-top:1px solid rgba(107,76,154,0.15);
+}
+
+/* GOLD SPARKLE BURST ON HOVER */
+@keyframes sparkBurst{
+0%{transform:scale(0) rotate(0deg);opacity:1}
+100%{transform:scale(1.5) rotate(180deg);opacity:0}
+}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(30px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* URGENCY BANNER */
+.urgency{
+position:relative;z-index:5;
+background:linear-gradient(90deg,var(--coral),#d4756a,var(--coral));
+background-size:200% auto;
+animation:urgencySlide 3s ease infinite;
+padding:0.7rem;text-align:center;
+font-size:0.8rem;font-weight:600;letter-spacing:1px;color:white;
+}
+@keyframes urgencySlide{0%{background-position:0% center}50%{background-position:100% center}100%{background-position:0% center}}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+.price-box{padding:1.8rem 1.5rem}
+.price-new{font-size:2.8rem}
+.timer-unit{min-width:70px;padding:1rem}
+.timer-num{font-size:2rem}
+.floating-cta{padding:0.8rem 1rem 1rem}
+.floating-cta .mini-price{display:block;margin-bottom:0.5rem;margin-right:0}
+}
+</style>
+</head>
+<body>
+
+<!-- URGENCY BANNER -->
+<div class="urgency">⚡ OFERTA DE LANZAMIENTO — Precio especial por tiempo limitado ⚡</div>
+
+<!-- SPARKLE CANVAS -->
+<canvas id="sparkles"></canvas>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-content">
+<div class="badge">✦ Nuevo Lanzamiento ✦</div>
+<h1 class="title">Rompe el Espejo</h1>
+<p class="subtitle">Guía completa para detectar, sobrevivir y sanar de relaciones narcisistas</p>
+<p class="hero-quote">
+"No estás loca. No estás exagerando.<br>
+Y este ebook es el primer paso para <em>demostrártelo</em>."
+</p>
+
+<div class="price-box">
+<div class="price-box-inner">
+<div class="price-label">Precio de lanzamiento</div>
+<span class="price-old">USD $79</span>
+<span class="price-new"><sup>$</sup>26</span>
+<br>
+<span class="price-save">🔥 Ahorrás USD $53 — 67% OFF</span>
+</div>
+</div>
+
+<a href="https://pay.hotmart.com/A105563498U" class="cta-btn" id="mainCta">✦ QUIERO MI COPIA AHORA ✦</a>
+</div>
+</section>
+
+<!-- TIMER -->
+<section class="timer-section">
+<div class="timer-label">⏰ Esta oferta expira en</div>
+<div class="timer">
+<div class="timer-unit">
+<div class="timer-num" id="hours">08</div>
+<div class="timer-txt">Horas</div>
+</div>
+<div class="timer-unit">
+<div class="timer-num" id="minutes">00</div>
+<div class="timer-txt">Minutos</div>
+</div>
+<div class="timer-unit">
+<div class="timer-num" id="seconds">00</div>
+<div class="timer-txt">Segundos</div>
+</div>
+</div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+<h2 class="features-title reveal">Lo que vas a <span>descubrir</span></h2>
+<div class="feature-grid">
+<div class="feature-card">
+<span class="feature-icon">🪞</span>
+<h3>Detectá al narcisista</h3>
+<p>Los 6 tipos de narcisistas explicados en detalle. Aprendé a reconocer las máscaras, el love bombing y las señales que nadie te enseñó a ver.</p>
+</div>
+<div class="feature-card">
+<span class="feature-icon">🌪️</span>
+<h3>Entendé el ciclo del abuso</h3>
+<p>Idealización, devaluación, descarte y hoovering. Descubrí por qué volvés, por qué te quedás, y por qué NO es tu culpa.</p>
+</div>
+<div class="feature-card">
+<span class="feature-icon">🧠</span>
+<h3>No estás loca: el gaslighting</h3>
+<p>Aprendé qué es, cómo funciona, y las frases exactas que lo delatan. Recuperá tu percepción de la realidad.</p>
+</div>
+<div class="feature-card">
+<span class="feature-icon">🔗</span>
+<h3>Rompé el vínculo traumático</h3>
+<p>La neurociencia detrás de tu "adicción" emocional. Entendé la biología y usala a tu favor para liberarte.</p>
+</div>
+<div class="feature-card">
+<span class="feature-icon">🛡️</span>
+<h3>Estrategias de supervivencia</h3>
+<p>Piedra gris, contacto cero, protección emocional y digital. Herramientas concretas para tu día a día.</p>
+</div>
+<div class="feature-card">
+<span class="feature-icon">🦋</span>
+<h3>Reconstruite y saná</h3>
+<p>Recuperá tu autoestima, tu identidad y tu capacidad de confiar. Aprendé cómo es una relación sana de verdad.</p>
+</div>
+</div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="social-proof reveal">
+<p class="big-quote">"Si tu mejor amiga te contara lo que vos estás viviendo, ¿qué le dirías? Aplicate ese mismo consejo."</p>
+<p class="big-quote-author">— Del Capítulo 3: Señales de alarma</p>
+</section>
+
+<!-- WHAT'S INSIDE -->
+<section class="features">
+<h2 class="features-title reveal">83 páginas que pueden <span>cambiarte la vida</span></h2>
+<div class="feature-grid">
+<div class="feature-card">
+<span class="feature-icon">📖</span>
+<h3>13 capítulos completos</h3>
+<p>Desde "¿qué es el narcisismo?" hasta "cómo reconocer relaciones sanas después del abuso". Todo el camino cubierto.</p>
+</div>
+<div class="feature-card">
+<span class="feature-icon">💜</span>
+<h3>Cuando estás sola</h3>
+<p>Un capítulo entero dedicado a vos si sentís que no tenés a nadie. Con pasos concretos, recursos reales y mucha compasión.</p>
+</div>
+<div class="feature-card">
+<span class="feature-icon">👶</span>
+<h3>Hijos y ciclo generacional</h3>
+<p>Cómo proteger a tus hijos, cómo hablar con ellos, y cómo romper el patrón para que no se repita.</p>
+</div>
+<div class="feature-card">
+<span class="feature-icon">⚕️</span>
+<h3>No reemplaza la terapia</h3>
+<p>Incluye aviso profesional, recursos para buscar ayuda y orientación sobre cuándo necesitás atención urgente.</p>
+</div>
+</div>
+</section>
+
+<!-- GUARANTEE -->
+<div class="guarantee reveal">
+<div class="guarantee-icon">🛡️</div>
+<h3>Garantía de satisfacción</h3>
+<p>Si sentís que este ebook no aportó nada a tu vida, te devolvemos el 100% de tu dinero. Sin preguntas, sin complicaciones. Tu tranquilidad es nuestra prioridad.</p>
+</div>
+
+<!-- ANOTHER QUOTE -->
+<section class="social-proof reveal">
+<p class="big-quote">"No necesitás ser rescatada. Necesitás recordar que siempre fuiste la heroína de tu propia historia."</p>
+<p class="big-quote-author">— Del Epílogo</p>
+</section>
+
+<!-- AUTHOR -->
+<section class="author-section reveal">
+<h3 class="author-name">Silvi Aura</h3>
+<p class="author-tagline">Porque sanar también es un acto de valentía</p>
+<p class="author-bio">
+Silvi Aura escribe para quienes necesitan escuchar lo que nadie les dice.
+"Rompe el Espejo" nació de una convicción: que la información es la primera forma de libertad, y que ninguna persona debería transitar el abuso emocional en silencio ni sintiéndose culpable por lo que le hicieron.
+</p>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+<h2 class="title">Tu historia empieza hoy</h2>
+<p class="subtitle" style="animation:none;opacity:1">Dejá de dudar de vos. Empezá a entenderte.</p>
+<div class="price-box" style="animation:none;opacity:1">
+<div class="price-box-inner">
+<div class="price-label">Último precio de lanzamiento</div>
+<span class="price-old">USD $79</span>
+<span class="price-new"><sup>$</sup>26</span>
+<br>
+<span class="price-save">🔥 Ahorrás USD $53 — 67% OFF</span>
+</div>
+</div>
+<a href="https://pay.hotmart.com/A105563498U" class="cta-btn" style="animation:none;opacity:1">✦ SÍ, QUIERO SANAR ✦</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+<p>© 2026 Silvi Aura — Todos los derechos reservados</p>
+<p style="margin-top:0.5rem;font-size:0.7rem">Este producto es un ebook digital. Recibirás acceso inmediato después de la compra.<br>
+Este material no sustituye la atención profesional de un psicólogo o terapeuta.</p>
+</footer>
+
+<!-- FLOATING CTA -->
+<div class="floating-cta" id="floatingCta">
+<span class="mini-price">
+<span class="old">$79</span>
+<span class="new">$26 USD</span>
+</span>
+<a href="https://pay.hotmart.com/A105563498U" class="cta-btn-sm">✦ COMPRAR AHORA ✦</a>
+</div>
+
+<script>
+// ── COUNTDOWN TIMER (8 hours) ──
+const TOTAL = 8 * 60 * 60;
+let remaining = TOTAL;
+const saved = sessionStorage.getItem('timer_start');
+if (saved) {
+  const elapsed = Math.floor((Date.now() - parseInt(saved)) / 1000);
+  remaining = Math.max(0, TOTAL - elapsed);
+} else {
+  sessionStorage.setItem('timer_start', Date.now().toString());
+}
+
+function updateTimer() {
+  if (remaining <= 0) {
+    document.getElementById('hours').textContent = '00';
+    document.getElementById('minutes').textContent = '00';
+    document.getElementById('seconds').textContent = '00';
+    return;
+  }
+  remaining--;
+  const h = Math.floor(remaining / 3600);
+  const m = Math.floor((remaining % 3600) / 60);
+  const s = remaining % 60;
+  document.getElementById('hours').textContent = String(h).padStart(2, '0');
+  document.getElementById('minutes').textContent = String(m).padStart(2, '0');
+  document.getElementById('seconds').textContent = String(s).padStart(2, '0');
+}
+updateTimer();
+setInterval(updateTimer, 1000);
+
+// ── SPARKLE CANVAS ──
+const canvas = document.getElementById('sparkles');
+const ctx = canvas.getContext('2d');
+let sparkles = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Sparkle {
+  constructor(x, y) {
+    this.x = x || Math.random() * canvas.width;
+    this.y = y || Math.random() * canvas.height;
+    this.size = Math.random() * 3 + 1;
+    this.speedX = (Math.random() - 0.5) * 0.5;
+    this.speedY = (Math.random() - 0.5) * 0.5;
+    this.life = 1;
+    this.decay = Math.random() * 0.015 + 0.005;
+    this.hue = Math.random() > 0.5 ? 38 : 270;
+    this.brightness = 70 + Math.random() * 30;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.life -= this.decay;
+  }
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = this.life;
+    ctx.fillStyle = `hsl(${this.hue}, 60%, ${this.brightness}%)`;
+    ctx.shadowColor = `hsl(${this.hue}, 80%, 70%)`;
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+
+    // Draw a 4-point star
+    const s = this.size;
+    ctx.moveTo(this.x, this.y - s * 2);
+    ctx.lineTo(this.x + s * 0.5, this.y - s * 0.5);
+    ctx.lineTo(this.x + s * 2, this.y);
+    ctx.lineTo(this.x + s * 0.5, this.y + s * 0.5);
+    ctx.lineTo(this.x, this.y + s * 2);
+    ctx.lineTo(this.x - s * 0.5, this.y + s * 0.5);
+    ctx.lineTo(this.x - s * 2, this.y);
+    ctx.lineTo(this.x - s * 0.5, this.y - s * 0.5);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+// Ambient sparkles
+setInterval(() => {
+  if (sparkles.length < 60) {
+    sparkles.push(new Sparkle());
+  }
+}, 100);
+
+// Mouse trail sparkles
+document.addEventListener('mousemove', (e) => {
+  for (let i = 0; i < 2; i++) {
+    sparkles.push(new Sparkle(
+      e.clientX + (Math.random() - 0.5) * 20,
+      e.clientY + (Math.random() - 0.5) * 20
+    ));
+  }
+});
+
+function animateSparkles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  sparkles = sparkles.filter(s => s.life > 0);
+  sparkles.forEach(s => { s.update(); s.draw(); });
+  requestAnimationFrame(animateSparkles);
+}
+animateSparkles();
+
+// ── FLOATING PARTICLES ──
+function createParticles() {
+  const colors = ['#c9a96e', '#e8c87e', '#9b7cc7', '#6b4c9a', '#f5e6c8'];
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    p.style.width = p.style.height = (Math.random() * 4 + 2) + 'px';
+    p.style.animationDuration = (Math.random() * 10 + 8) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    p.style.opacity = Math.random() * 0.5 + 0.1;
+    document.body.appendChild(p);
+  }
+}
+createParticles();
+
+// ── FLOATING CTA ──
+const floatingCta = document.getElementById('floatingCta');
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  if (scrollY > 600) {
+    floatingCta.classList.add('visible');
+  } else {
+    floatingCta.classList.remove('visible');
+  }
+  lastScroll = scrollY;
+});
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal, .feature-card').forEach(el => observer.observe(el));
+
+// ── STAGGERED CARD ANIMATION ──
+const cardObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const cards = entry.target.querySelectorAll('.feature-card');
+      cards.forEach((card, i) => {
+        setTimeout(() => card.classList.add('visible'), i * 150);
+      });
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.feature-grid').forEach(g => cardObserver.observe(g));
+</script>
+</body>
+</html>
